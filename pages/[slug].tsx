@@ -11,7 +11,7 @@ const ShowPage: NextPage = () => {
   useEffect(() => {
     setLoading(true)
     // TODO: ここをCloud FunctionsのエンドポイントのURLに変更する
-    fetch(`https://example.com/${slug}`)
+    fetch(`https://asia-northeast1-booming-opus-329309.cloudfunctions.net/twitter_influ_score?id=${slug}`)
       .then((res) => res.json())
       .then(setData)
       .finally(() => setLoading(false))
