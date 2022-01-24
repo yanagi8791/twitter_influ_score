@@ -59,7 +59,7 @@ const Home: NextPage<Props> = ({ youtuberRanking, politicianRanking }) => {
               onChange={(e) => setSlug(e.target.value)}
               display="inline-block"
             />
-            <Button ml="4">検索</Button>
+            <Button type="submit" ml="4">検索</Button>
           </Flex>
         </form>
 
