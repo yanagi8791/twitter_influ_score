@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaTwitter } from "react-icons/fa";
 import { TwitterShareButton } from "react-share";
+import { Loading } from "../components/Loading";
 
 const ShowPage: NextPage = () => {
   const router = useRouter();
@@ -24,40 +25,42 @@ const ShowPage: NextPage = () => {
       .finally(() => setLoading(false));
   }, [slug]);
 
-  if (loading) return <span>Loading...</span>;
-
   return (
     <Container display="grid" placeItems="center" height="100vh">
-      <Box>
-        <Box border="gray" p="2">
+      {loading ? (
+        <Loading />
+      ) : (
+        <Box>
+          <Box border="gray" p="2">
+            <Center>
+              <Text fontSize="xl">スコア</Text>
+            </Center>
+            <Center>
+              <Text fontSize="4xl" fontWeight="bold">
+                {data.score}
+              </Text>
+            </Center>
+          </Box>
+
           <Center>
-            <Text fontSize="xl">スコア</Text>
-          </Center>
-          <Center>
-            <Text fontSize="4xl" fontWeight="bold">
-              {data.score}
-            </Text>
+            <TwitterShareButton
+              title={`@${slug}のスコアは${data.score}です`}
+              url={currentURL}
+              resetButtonStyle
+            >
+              <Button
+                bgColor="#00ACEE"
+                color="white"
+                _hover={{ bgColor: "" }}
+                as="div"
+              >
+                <FaTwitter />
+                <Text ml="2">Twitterで共有</Text>
+              </Button>
+            </TwitterShareButton>
           </Center>
         </Box>
-
-        <Center>
-          <TwitterShareButton
-            title={`@${slug}のスコアは${data.score}です`}
-            url={currentURL}
-            resetButtonStyle
-          >
-            <Button
-              bgColor="#00ACEE"
-              color="white"
-              _hover={{ bgColor: "" }}
-              as="div"
-            >
-              <FaTwitter />
-              <Text ml="2">Twitterで共有</Text>
-            </Button>
-          </TwitterShareButton>
-        </Center>
-      </Box>
+      )}
     </Container>
   );
 };
