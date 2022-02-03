@@ -1,32 +1,56 @@
 import { Box, Button, Center, Container, Text } from "@chakra-ui/react";
-import { NextPage } from "next";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { GetServerSideProps, NextPage } from "next";
+import Head from "next/head";
+import { useState } from "react";
 import { FaTwitter } from "react-icons/fa";
 import { TwitterShareButton } from "react-share";
 import { Loading } from "../components/Loading";
 
-const ShowPage: NextPage = () => {
-  const router = useRouter();
-  const slug = router.query.slug as string;
-  const [data, setData] = useState<any>({});
+type Props = {
+  slug: string;
+  score: number;
+};
+
+export const getServerSideProps: GetServerSideProps<{ slug: string }> = async (
+  ctx
+) => {
+  const slug = ctx.params?.slug as string;
+
+  const data = await fetch(
+    `https://asia-northeast1-booming-opus-329309.cloudfunctions.net/twitter_influ_score?id=${slug}`
+  ).then((res) => res.json());
+  return { props: { slug, score: data.score } };
+};
+
+const ORIGIN =
+  process.env.NODE_ENV === "production"
+    ? "https://www.tweet-this-page.com" // あとでApp EngineのURLを書く
+    : "http://localhost:3000";
+
+const ShowPage: NextPage<Props> = ({ slug, score }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const currentURL = typeof location === "undefined" ? "" : location.href;
 
-  useEffect(() => {
-    if (!slug) return;
-
-    setLoading(true);
-    fetch(
-      `https://asia-northeast1-booming-opus-329309.cloudfunctions.net/twitter_influ_score?id=${slug}`
-    )
-      .then((res) => res.json())
-      .then(setData)
-      .finally(() => setLoading(false));
-  }, [slug]);
+  const title = `@${slug}のスコア - twitter_influ_score`;
 
   return (
     <Container display="grid" placeItems="center" height="100vh">
+      <Head>
+        <title>{title}</title>
+        <meta property="og:title" content={title} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`${ORIGIN}/${slug}`} />
+        <meta
+          property="og:image"
+          content={`${ORIGIN}/api/${slug}/ogp?score=${score}`}
+        />
+        <meta property="og:site_name" content="twitter_influ_score" />
+        <meta
+          property="og:description"
+          content="ツイッターの影響度をスコア化"
+        />
+        <meta name="twitter:card" content="photo" />
+      </Head>
       {loading ? (
         <Loading />
       ) : (
@@ -37,14 +61,14 @@ const ShowPage: NextPage = () => {
             </Center>
             <Center>
               <Text fontSize="4xl" fontWeight="bold">
-                {data.score}
+                {score}
               </Text>
             </Center>
           </Box>
 
           <Center>
             <TwitterShareButton
-              title={`@${slug}のスコアは${data.score}です`}
+              title={`@${slug}のスコアは${score}です`}
               url={currentURL}
               resetButtonStyle
             >
