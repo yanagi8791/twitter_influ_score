@@ -4,8 +4,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start -p $PORT",
+    "lint": "next lint",
+    "deploy": "npm run build && gcloud app deploy --project faro-connect"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.7.4",
@@ -24,5 +25,6 @@
     "eslint": "8.5.0",
     "eslint-config-next": "12.0.7",
     "typescript": "4.5.4"
-  }
+  },
+  "prettier": {}
 }
