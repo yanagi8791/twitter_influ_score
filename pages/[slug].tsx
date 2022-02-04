@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps<{ slug: string }> = async (
 
 const ORIGIN =
   process.env.NODE_ENV === "production"
-    ? "https://www.tweet-this-page.com" // あとでApp EngineのURLを書く
+    ? "faro-connect.uc.r.appspot.com" // あとでApp EngineのURLを書く
     : "http://localhost:3000";
 
 const ShowPage: NextPage<Props> = ({ slug, score }) => {
