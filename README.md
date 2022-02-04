@@ -2,7 +2,14 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+First, install dependencies.
+
+```bash
+brew install pkg-config cairo pango libpng jpeg giflib librsvg # for canvas
+npm i
+```
+
+Run the development server:
 
 ```bash
 npm run dev
