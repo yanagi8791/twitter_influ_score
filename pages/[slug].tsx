@@ -17,14 +17,14 @@ export const getServerSideProps: GetServerSideProps<{ slug: string }> = async (
   const slug = ctx.params?.slug as string;
 
   const data = await fetch(
-    `https://asia-northeast1-booming-opus-329309.cloudfunctions.net/twitter_influ_score?id=${slug}`
+    `https://asia-northeast1-faro-connect.cloudfunctions.net/twitter_influ_score?id=${slug}`
   ).then((res) => res.json());
   return { props: { slug, score: data.score } };
 };
 
 const ORIGIN =
   process.env.NODE_ENV === "production"
-    ? "faro-connect.uc.r.appspot.com" // あとでApp EngineのURLを書く
+    ? "https://faro-connect.uc.r.appspot.com" // あとでApp EngineのURLを書く
     : "http://localhost:3000";
 
 const ShowPage: NextPage<Props> = ({ slug, score }) => {
