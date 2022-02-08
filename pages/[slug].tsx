@@ -49,7 +49,7 @@ const ShowPage: NextPage<Props> = ({ slug, score }) => {
           property="og:description"
           content="ツイッターの影響度をスコア化"
         />
-        <meta name="twitter:card" content="photo" />
+        <meta name="twitter:card" content="summary_large_image" />
       </Head>
       {loading ? (
         <Loading />
